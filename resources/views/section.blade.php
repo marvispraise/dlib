@@ -19,6 +19,9 @@
       <div class="main-panel">
         <div class="content-wrapper">
           <div class="row">
+              <div class="col-md-12 grid-margin">
+                  @include('inc.alert')
+              </div>
               @if(!empty($sections))
                   @foreach($sections as $section)
                         <div class="col-md-4 grid-margin">

@@ -20,10 +20,13 @@
       <div class="main-panel">
         <div class="content-wrapper">
           <div class="row">
+              <div class="col-md-12 grid-margin">
+                  @include('inc.alert')
+              </div>
               @if(!empty($rows))
                   @foreach($rows as $row)
                         <div class="col-md-4 grid-margin">
-                            <a href="">
+                            <a href="{{ route('viewRowTape',$row->unique_id) }}">
                                 <div class="card bg-dark">
                                     <div class="card-body">
                                         <div class="d-flex flex-row align-items-top">

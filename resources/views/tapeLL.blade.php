@@ -24,19 +24,24 @@
                 </div>
             </div>
           <div class="row">
+              <div class="col-md-12 grid-margin">
+                  @include('inc.alert')
+              </div>
             <div class="col-md-6 grid-margin stretch-card">
               <div class="card">
                 <div class="card-body">
-                  <h4 class="card-title">Basic form elements</h4>
-                  <form class="forms-sample">
+                  <h4 class="card-title">Login Tape</h4>
+                  <form class="forms-sample" method="post" action="{{route('loginTape')}}">
+                      @csrf
                       <div class="col-md-12">
                           <div class="form-group row">
                               <label class="col-sm-3 col-form-label">Choose Login Tape</label>
                               <div class="col-sm-9">
-                                  <select class="form-control">
-                                      <option>Choose Program</option>
-                                      <option>Loveworld Prayer Session</option>
-                                      <option>Loveworld Prayer Session Night</option>
+                                  <select class="form-control" name="tape">
+                                      <option disabled selected>Choose Tape</option>
+                                      @foreach($tapes as $tape)
+                                      <option value="{{$tape->unique_id}}">{{$tape->programs->title}} - {{$tape->name}}</option>
+                                      @endforeach
                                   </select>
                               </div>
                           </div>
@@ -49,16 +54,18 @@
               <div class="col-md-6 grid-margin stretch-card">
                   <div class="card">
                       <div class="card-body">
-                          <h4 class="card-title">Basic form elements</h4>
-                          <form class="forms-sample">
+                          <h4 class="card-title">Logout Tape</h4>
+                          <form class="forms-sample" action="{{route('logoutTape')}}" method="post">
+                              @csrf
                               <div class="col-md-12">
                                   <div class="form-group row">
                                       <label class="col-sm-3 col-form-label">Choose Logout Tape</label>
                                       <div class="col-sm-9">
-                                          <select class="form-control">
-                                              <option>Choose Program</option>
-                                              <option>Loveworld Prayer Session</option>
-                                              <option>Loveworld Prayer Session Night</option>
+                                          <select class="form-control" name="tape">
+                                              <option disabled selected>Choose Tape</option>
+                                              @foreach($lTapes as $tape)
+                                              <option value="{{$tape->unique_id}}">{{$tape->programs->title}} - {{$tape->name}}</option>
+                                              @endforeach
                                           </select>
                                       </div>
                                   </div>

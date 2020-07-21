@@ -42,6 +42,7 @@
                                 </ul>
                             </div>
                             <div class="col-md-10">
+                                @include('inc.alert')
                                 <div class="tab-content tab-content-vertical" id="v-pills-tabContent">
                                     <div class="tab-pane fade active show" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
                                         <div class="media">
@@ -57,55 +58,24 @@
                                                     </tr>
                                                     </thead>
                                                     <tbody>
+                                                    <?php $x = 1; ?>
+                                                    @foreach($users as $user)
                                                     <tr>
-                                                        <td>1</td>
-                                                        <td>2012/08/03</td>
-                                                        <td>Edinburgh</td>
-                                                        <td>New York</td>
-                                                        <td>$1500</td>
+                                                        <td>{{$x++}}</td>
+                                                        <td>{{$user->name}}</td>
+                                                        <td>{{$user->email}}</td>
+                                                        <td>{{$user->department}}</td>
+                                                        <td>
+                                                            @if($user->level == 0)
+                                                                Guest
+                                                                @elseif($user->level == 1)
+                                                                Admin
+                                                            @else
+                                                                Super Admin
+                                                            @endif
+                                                        </td>
                                                     </tr>
-                                                    <tr>
-                                                        <td>2</td>
-                                                        <td>2015/04/01</td>
-                                                        <td>Doe</td>
-                                                        <td>Brazil</td>
-                                                        <td>$4500</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>3</td>
-                                                        <td>2010/11/21</td>
-                                                        <td>Sam</td>
-                                                        <td>Tokyo</td>
-                                                        <td>$2100</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>4</td>
-                                                        <td>2016/01/12</td>
-                                                        <td>Sam</td>
-                                                        <td>Tokyo</td>
-                                                        <td>$2100</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>5</td>
-                                                        <td>2017/12/28</td>
-                                                        <td>Sam</td>
-                                                        <td>Tokyo</td>
-                                                        <td>$2100</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>6</td>
-                                                        <td>2000/10/30</td>
-                                                        <td>Sam</td>
-                                                        <td>Tokyo</td>
-                                                        <td>$2100</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>7</td>
-                                                        <td>2011/03/11</td>
-                                                        <td>Cris</td>
-                                                        <td>Tokyo</td>
-                                                        <td>$2100</td>
-                                                    </tr>
+                                                   @endforeach
                                                     </tbody>
                                                 </table>
                                             </div>

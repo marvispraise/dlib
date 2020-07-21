@@ -21,7 +21,7 @@
                 <div class="card">
                     <div class="card-body">
                         <h1 class="card-title">Programs</h1>
-                        <p class="card-description">Total number of Programs <code>7 program</code></p>
+                        <p class="card-description">Total number of Programs <code>{{count($programs)}} program(s)</code></p>
                         <div class="row">
                             <div class="col-md-2">
                                 <ul class="nav nav-pills nav-pills-vertical nav-pills-primary" id="v-pills-tab" role="tablist" aria-orientation="vertical">
@@ -40,6 +40,7 @@
                                 </ul>
                             </div>
                             <div class="col-md-10">
+                                @include('inc.alert')
                                 <div class="tab-content tab-content-vertical" id="v-pills-tabContent">
                                     <div class="tab-pane fade active show" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
                                         <div class="media">
@@ -54,18 +55,15 @@
                                                     </tr>
                                                     </thead>
                                                     <tbody>
+                                                    <?php $x = 1; ?>
+                                                    @foreach($programs as $program)
                                                     <tr>
-                                                        <td>1</td>
-                                                        <td>Edinburgh</td>
-                                                        <td>New York</td>
-                                                        <td>2019-05-23</td>
+                                                        <td>{{$x++}}</td>
+                                                        <td>{{$program->title}}</td>
+                                                        <td>{{$program->location}}</td>
+                                                        <td>{{date("Y-m-d", $program->date)}}</td>
                                                     </tr>
-                                                    <tr>
-                                                        <td>2</td>
-                                                        <td>Edinburgh</td>
-                                                        <td>New York</td>
-                                                        <td>2019-05-23</td>
-                                                    </tr>
+                                                    @endforeach
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -74,7 +72,8 @@
                                     <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
                                         <div class="media">
                                             <div class="media-body">
-                                                <form class="form-sample">
+                                                <form class="form-sample" method="post" action="{{route('addProgram')}}">
+                                                    @csrf
                                                     <p class="card-description">
                                                         Create New Program
                                                     </p>
@@ -83,7 +82,7 @@
                                                             <div class="form-group row">
                                                                 <label class="col-sm-3 col-form-label">Program Title</label>
                                                                 <div class="col-sm-9">
-                                                                    <input type="text" class="form-control" />
+                                                                    <input type="text" class="form-control" name="title"/>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -91,7 +90,7 @@
                                                             <div class="form-group row">
                                                                 <label class="col-sm-3 col-form-label">Location</label>
                                                                 <div class="col-sm-9">
-                                                                    <input type="text" class="form-control" />
+                                                                    <input type="text" class="form-control" name="location" />
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -102,7 +101,7 @@
                                                             <div class="form-group row">
                                                                 <label class="col-sm-3 col-form-label">Date</label>
                                                                 <div class="col-sm-9">
-                                                                    <input type="date" class="form-control" />
+                                                                    <input type="date" class="form-control" name="date"/>
                                                                 </div>
                                                             </div>
                                                         </div>

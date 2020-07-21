@@ -20,19 +20,45 @@
             <div class="col-md-12 grid-margin stretch-card">
               <div class="card">
                 <div class="card-body">
-                  <h1 class="card-title" style="font-size: large; text-align: center">Search for Tapes to Loan</h1>
-                  <div class="template-demo">
-                      <li class="nav-item nav-search d-none d-lg-flex">
-                          <div class="input-group">
-                              <div class="input-group-prepend">
-                                <span class="input-group-text" id="search">
-                                  <i class="mdi mdi-magnify"></i>
-                                </span>
-                              </div>
-                              <input type="text" class="form-control" placeholder="search" aria-label="search" aria-describedby="search">
-                          </div>
-                      </li>
-                  </div>
+                  <h1 class="card-title" style="font-size: large; text-align: center">Select Tape to Loan</h1>
+                    <div class="row">
+                        <div class="col-md-12">
+                            @include('inc.alert')
+                            <div class="tab-content tab-content-vertical" id="v-pills-tabContent">
+                                <div class="tab-pane fade active show" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+                                    <div class="media">
+                                        <div class="table-responsive">
+                                            <table id="order-listing" class="table">
+                                                <thead>
+                                                <tr>
+                                                    <th>id</th>
+                                                    <th>Program Title</th>
+                                                    <th>Class Of Tape</th>
+                                                    <th>Tape Content</th>
+                                                    <th>Date/Year</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <?php $x = 1;?>
+                                                    @foreach($tapes as $tape)
+                                                    <tr>
+                                                        <td>{{$x++}}</td>
+                                                        <td>{{$tape->programs->title}} -- {{$tape->name}}</td>
+                                                        <td>{{$tape->classOfTape}}</td>
+                                                        <td>{{$tape->tapeContent}}</td>
+                                                        <td>{{date("jS M, Y", $tape->date)}}</td>
+                                                        <td><a href="{{route('viewLoan', ['id' => $tape->id])}}" class="badge badge-success">Request</a></td>
+                                                    </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
               </div>
             </div>

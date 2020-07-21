@@ -16,10 +16,11 @@ class CreateTapesTable extends Migration
         Schema::create('tapes', function (Blueprint $table) {
             $table->id();
             $table->uuid('unique_id');
+            $table->string('name');
             $table->string('classOfTape');
             $table->string('program');
             $table->string('editor');
-            $table->integer('minister');
+            $table->string('minister');
             $table->string('libNo');
             $table->string('shelfNo');
             $table->string('section');
@@ -29,7 +30,7 @@ class CreateTapesTable extends Migration
             $table->string('tapeType');
             $table->string('tapeContent')->nullable();
             $table->string('date');
-            $table->string('status')->default(0);
+            $table->string('status')->default(1);
             $table->timestamps();
         });
     }

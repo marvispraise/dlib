@@ -71,18 +71,16 @@
                         </tr>
                       </thead>
                       <tbody>
+                      @foreach($dTapes as $loan)
+                      @foreach($loan['tapes'] as $l)
                         <tr>
-                          <td>Moon Fever</td>
-                          <td>42070</td>
-                          <td>23-02-2020</td>
-                          <td>23-01-2020</td>
+                          <td>{{$l->loan->firstname}} {{$l->loan->lastname}}</td>
+                          <td>{{$l->programs->title}} </td>
+                          <td>{{date("Y-m-d", $l->loan->borrowedDate)}}</td>
+                          <td>{{date("Y-m-d", $l->loan->returningDate)}}</td>
                         </tr>
-                        <tr>
-                          <td>Dude You Re Getting A Telescope</td>
-                          <td>38667</td>
-                          <td>23-02-2020</td>
-                          <td>23-02-2020</td>
-                        </tr>
+                      @endforeach
+                      @endforeach
                       </tbody>
                     </table>
                   </div>

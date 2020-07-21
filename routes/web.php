@@ -17,11 +17,10 @@ Auth::routes();
 
 
 Route::group(['middleware' => ['auth']], function () {
-//    Route::group(['middleware' => ['superAdmin']], function () {
+    Route::get('/', 'DashboardController@home')->name('index');
         Route::group(['middleware' => ['admin']], function () {
 
         //////////////Dashboard Controller
-    Route::get('/', 'DashboardController@home')->name('index');
 
     ////////////////Library Controller
     Route::get('/library', 'LibraryController@view')->name('viewLibrary');
@@ -33,12 +32,36 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/row/{section}', 'LibraryController@viewRow')->name('viewRow');
     Route::post('/addRow/{section}', 'LibraryController@addRow')->name('addRow');
     Route::get('/tapes/{row}', 'LibraryController@viewRowTape')->name('viewRowTape');
+    Route::post('/addRowTape/{row}', 'LibraryController@addRowTape')->name('addRowTape');
 
     //////////////////TapesController
-    Route::get('/program', 'LibraryController@viewProgram')->name('viewProgram');
-    Route::get('/addProgram', 'LibraryController@addProgram')->name('addProgram');
+    Route::get('/program', 'TapesController@viewProgram')->name('viewProgram');
+    Route::post('/addProgram', 'TapesController@addProgram')->name('addProgram');
+    Route::get('/tapes', 'TapesController@viewTape')->name('viewTape');
+    Route::post('/addTape', 'TapesController@addTape')->name('addTape');
+    Route::get('/viewTapeLL', 'TapesController@viewTapeLL')->name('viewTapeLL');
+    Route::post('/loginTape', 'TapesController@loginTape')->name('loginTape');
+    Route::post('/logoutTape', 'TapesController@logoutTape')->name('logoutTape');
+
+    ////////usersController
+
+
+    //////////loansController
+    Route::get('/tapeRequest', 'LoansController@viewRequestedTape')->name('tapeRequest');
+    Route::get('/accept/{id}', 'LoansController@accept')->name('accept');
+    Route::get('/decline/{id}', 'LoansController@decline')->name('decline');
+
+        // Route::post('/users', 'UsersController@addUser')->name('addUser');
 
         });
-//    });
+    Route::get('/requestTape', 'LoansController@requestForm')->name('requestForm');
+//    Route::get('/searchTape', 'LoansController@searchTape')->name('searchTape');
+    Route::get('/searchP', 'LoansController@searchP')->name('searchP');
+
+    Route::get('/viewLoan/{id}', 'LoansController@viewLoan')->name('viewLoan');
+    Route::post('/loanTape', 'LoansController@loanTape')->name('loanTape');
+    Route::get('/users', 'UsersController@viewUser')->name('viewUser')->middleware('superAdmin');
+    Route::post('/users', 'UsersController@addUser')->name('addUser')->middleware('superAdmin');
+
 });
 

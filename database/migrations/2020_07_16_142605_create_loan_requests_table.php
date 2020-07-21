@@ -21,10 +21,9 @@ class CreateLoanRequestsTable extends Migration
             $table->string('phone');
             $table->string('dept');
             $table->string('tape_id');
-            $table->string('duration');
             $table->string('borrowedDate');
             $table->string('returningDate');
-            $table->string('status')->nullable()->default(0);
+            $table->integer('status')->nullable()->default(0);
             $table->timestamps();
         });
     }

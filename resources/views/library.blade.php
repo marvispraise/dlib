@@ -20,7 +20,10 @@
       <div class="main-panel">
         <div class="content-wrapper">
           <div class="row">
-              @if(!empty($libraries))
+              <div class="col-md-12 grid-margin">
+              @include('inc.alert')
+              </div>
+          @if(!empty($libraries))
               @foreach($libraries as $library)
                       <div class="col-md-4 grid-margin">
                             <a href="{{route('viewShelf', ['library' => $library->unique_id])}}">

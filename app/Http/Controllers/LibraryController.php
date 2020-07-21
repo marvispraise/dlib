@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Library;
+use App\Program;
 use App\Row;
 use App\Section;
 use App\Shelf;
@@ -112,7 +113,61 @@ class LibraryController extends Controller
 
     //////////////////////////////////////tapes
     public function viewRowTape($row){
-        $data['tapes'] = Tape::where('row_id', $row)->get();
-        return view('admin.row_tapes', $data);
+        $tapes = Tape::where('rowNo', $row)->get();
+        $programs = Program::all();
+        $rowe =  Row::where('unique_id', $row)->first();
+        $section = Section::where('unique_id',$rowe->section_id)->first();
+        $shelf = Shelf::where('unique_id',$section->shelf_id)->first();
+        $library = Library::where('unique_id',$shelf->library_id)->first();
+
+        return view('row_details', [
+            'tapes' => $tapes,
+            'programs' => $programs,
+            'rowe' => $rowe,
+            'section' => $section,
+            'shelf' => $shelf,
+            'library' => $library,
+        ]);
+    }
+
+    public function addRowTape($row,Request $request){
+        request()->validate([
+            'classOfTape' => 'required',
+            'program' => 'required',
+            'editor' => 'required',
+            'minister' => 'required',
+            'date' => 'required',
+            'section' => 'required',
+            'shelfNo' => 'required',
+            'libNo' => 'required',
+        ]);
+
+        $new = new Tape();
+        $new->unique_id  = Uuid::generate();
+        $new->name  = $request->get('name');
+        $new->classOfTape  = $request->get('classOfTape');
+        $new->program  = $request->get('program');
+        $new->editor  = $request->get('editor');
+        $new->minister  = $request->get('minister');
+        $new->rowNo  = $row;
+
+        $new->section  = $request->get('section');
+
+        $new->shelfNo  = $request->get('shelfNo');
+
+        $new->libNo  = $request->get('libNo');
+
+        $new->tapeNumbering  = $request->get('tapeNumbering');
+        $new->tapePresence  = $request->get('tapePresence');
+        $new->tapeType  = $request->get('tapeType');
+        $new->tapeContent  = $request->get('tapeContent');
+        $new->date  = strtotime($request->get('date'));
+        $new->status  = 1;
+
+        $new->save();
+
+        return redirect()->route('viewRowTape',$row)
+            ->with('success','Successfully Added Tape.');
+
     }
 }

@@ -11,84 +11,46 @@
     </nav>
     <!-- partial -->
     <div class="container-fluid page-body-wrapper">
-        <nav class="sidebar sidebar-offcanvas" id="sidebar">
-            <ul class="nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('tape_request') }}">
-                        <i class="mdi mdi-view-quilt menu-icon"></i>
-                        <span class="menu-title">Dashboard</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('allItems') }}">
-                        <i class="mdi mdi-database menu-icon"></i>
-                        <span class="menu-title">All Items</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('user') }}">
-                        <i class="mdi mdi-account menu-icon"></i>
-                        <span class="menu-title">Users</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('program') }}">
-                        <i class="mdi mdi-archive menu-icon"></i>
-                        <span class="menu-title">All Programs</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('shelf') }}">
-                        <i class="mdi mdi-stove menu-icon"></i>
-                        <span class="menu-title">Shelves</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('logout') }}">
-                        <i class="mdi mdi-logout menu-icon"></i>
-                        <span class="menu-title">Logout</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
+    @include('inc.aside')
         <!-- partial -->
         <div class="main-panel">
             <div class="content-wrapper">
                 <div class="card">
                     <div class="card-body">
-                        <h4 class="card-title">Total Borrowed Items</h4>
+                        <h4 class="card-title">Tape Requests</h4>
                         <div class="row">
                             <div class="col-12">
+                                @include('inc.alert')
                                 <div class="table-responsive">
                                     <table id="order-listing" class="table">
                                         <thead>
                                         <tr>
                                             <th>#</th>
-                                            <th>Program Title</th>
-                                            <th>Description</th>
+                                            <th>Program</th>
+                                            <th>Tape</th>
                                             <th>Minister</th>
-                                            <th>Status</th>
+                                            <th>Actions</th>
                                         </tr>
                                         </thead>
                                         <tbody>
+                                        <?php $x = 1; ?>
+                                        @foreach($loan_requests as $loan_request)
                                         <tr>
-                                            <td>1</td>
-                                            <td>Edinburgh</td>
-                                            <td>New York</td>
-                                            <td>New York</td>
+                                            <td>{{$x++}}</td>
+                                            <td>{{$loan_request->tape->programs->title}}</td>
+                                            <td>{{$loan_request->tape->name}}</td>
+                                            <td>{{$loan_request->tape->minister}}</td>
                                             <td>
-                                                <label class="badge badge-danger">Borrowed</label>
+                                                @if($loan_request->status == 0)
+                                                <a href="{{route('decline',$loan_request->unique_id)}}" class="badge badge-danger">Decline</a> || <a href="{{route('accept',$loan_request->unique_id)}}" class="badge badge-success">Accept</a>
+                                                @elseif($loan_request->status == 1)
+                                                    <span class="badge badge-success">Accepted</span>
+                                                @elseif($loan_request->status == 2)
+                                                    <span class="badge badge-danger">Declined</span>
+                                                @endif
                                             </td>
                                         </tr>
-                                        <tr>
-                                            <td>2</td>
-                                            <td>Edinburgh</td>
-                                            <td>New York</td>
-                                            <td>New York</td>
-                                            <td>
-                                                <label class="badge badge-primary">Not</label>
-                                            </td>
-                                        </tr>
+                                       @endforeach
                                         </tbody>
                                     </table>
                                 </div>
