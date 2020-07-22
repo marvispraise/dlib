@@ -40,12 +40,25 @@
                             <div class="col-md-10">
                                 @include('inc.alert')
 
+                                        <div class="template-demo">
+                                            <li class="nav-item nav-search d-none d-lg-flex">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                <span class="input-group-text" id="search">
+                                  <i class="mdi mdi-magnify"></i>
+                                </span>
+                                                    </div>
+                                                    <input type="text" class="form-control" placeholder="search" id="tape">
+                                                </div>
+                                            </li>
+                                        </div>
+
                                 <div class="tab-content tab-content-vertical" id="v-pills-tabContent">
                                     <div class="tab-pane fade active show" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
                                         <div class="media">
 
                                             <div class="table-responsive">
-                                                <table id="order-listing" class="table">
+                                                <table class="table">
                                                     <thead>
                                                     <tr>
                                                         <th>Lib No.</th>
@@ -65,7 +78,7 @@
                                                         <th>Status</th>
                                                     </tr>
                                                     </thead>
-                                                    <tbody>
+                                                    <tbody id="test">
                                                     @foreach($items as $item)
                                                     <tr>
                                                         <td>{{$item->library->library}}</td>
@@ -99,7 +112,11 @@
                                                     </tr>
                                                     @endforeach
                                                     </tbody>
+                                                    <tfoot>
+                                                    </tfoot>
                                                 </table>
+                                                {{ $items->links() }}
+
                                             </div>
                                         </div>
                                     </div>
@@ -135,57 +152,28 @@
                                                             <div class="form-group row">
                                                                 <label class="col-sm-3 col-form-label">Choose Library</label>
                                                                 <div class="col-sm-9">
-                                                                    <select class="form-control" name="libNo">
+
+                                                                    <select class="form-control" name="libNo" id="library">
                                                                         <option selected disabled="disabled">Select</option>
                                                                         @foreach($libraries as $library)
-                                                                        <option value="{{$library->unique_id}}">{{$library->library}}</option>
+                                                                        <option value="{{$library->unique_id}}" library_id="{{$library->unique_id}}">{{$library->library}}</option>
                                                                         @endforeach
                                                                     </select>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                            <div class="form-group row">
-                                                                <label class="col-sm-3 col-form-label">Shelf No.</label>
-                                                                <div class="col-sm-9">
-                                                                    <select class="form-control" name="shelfNo">
-                                                                        <option selected disabled="disabled">Select</option>
-                                                                        @foreach($shelves as $shelf)
-                                                                            <option value="{{$shelf->unique_id}}">{{$shelf->shelf}}</option>
-                                                                        @endforeach
-                                                                    </select>
+
                                                                 </div>
                                                             </div>
                                                         </div>
 
-                                                    </div>
+                                                        <div class="col-md-6" id="shelfHolder">
 
-                                                    <div class="row">
-                                                        <div class="col-md-6">
-                                                            <div class="form-group row">
-                                                                <label class="col-sm-3 col-form-label">Section</label>
-                                                                <div class="col-sm-9">
-                                                                    <select class="form-control" name="section">
-                                                                        <option selected disabled="disabled">Select</option>
-                                                                        @foreach($sections as $section)
-                                                                            <option value="{{$section->unique_id}}">{{$section->section}}</option>
-                                                                        @endforeach
-                                                                    </select>
-                                                                </div>
-                                                            </div>
                                                         </div>
-                                                        <div class="col-md-6">
-                                                            <div class="form-group row">
-                                                                <label class="col-sm-3 col-form-label">Row No.</label>
-                                                                <div class="col-sm-9">
-                                                                    <select class="form-control" name="rowNo">
-                                                                        <option selected disabled="disabled">Select</option>
-                                                                        @foreach($rows as $row)
-                                                                            <option value="{{$row->unique_id}}">{{$row->row}}</option>
-                                                                        @endforeach
-                                                                    </select>
-                                                                </div>
-                                                            </div>
+
+
+                                                        <div class="col-md-6" id="sectionHolder">
+
+                                                        </div>
+                                                        <div class="col-md-6" id="rowHolder">
+
                                                         </div>
 
                                                     </div>
@@ -298,6 +286,189 @@
   <!-- container-scroller -->
   <!-- plugins:js -->
   @include('inc.scripts')
+
+  <script>
+
+
+      //$("#shelf").hide();
+      $("#section").hide();
+      $("#row").hide();
+
+      $("#library").change(function (){
+            var amountex =   $(this).children("option:selected").attr("value");
+          $.ajax({
+
+              url:"/accessShelf/"+amountex,
+
+              type:"GET",
+
+              success:function (data) {
+
+                  if(data.data.length > 0){
+                        var obj = "";
+                        for(var i = 0; i<data.data.length; i++){
+                            obj+= '<option value="'+data.data[i].unique_id+'">'+data.data[i].shelf+'</option>'
+                        }
+
+
+                      var shelf = `
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Shelf No.</label>
+                                    <div class="col-sm-9">
+                                        <select class="form-control" name="shelfNo" id="shelf">
+                                            <option selected disabled="disabled">Select</option>
+                                            ${obj}
+
+                                      </select>
+                                  </div>
+                              </div>`
+
+                      $("#shelfHolder").html(shelf);
+                  }
+
+              }
+          })
+
+
+
+
+
+      });
+
+
+      $(document).on("change","#shelf",function(e){
+
+          var amountex =   $(this).children("option:selected").attr("value");
+          $.ajax({
+              url:"/accessSection/"+amountex,
+
+              type:"GET",
+
+              success:function (data) {
+                  if(data.data.length > 0){
+                      var obj = "";
+                      for(var i = 0; i<data.data.length; i++){
+                          obj+= '<option value="'+data.data[i].unique_id+'">'+data.data[i].section+'</option>'
+                      }
+
+                      var section = `
+                                <div class="form-group row" id="section">
+                                    <label class="col-sm-3 col-form-label">Section.</label>
+                                    <div class="col-sm-9">
+                                        <select class="form-control" name="section" id="section">
+                                            <option selected disabled="disabled">Select</option>
+                                                 ${obj}
+                                      </select>
+                                  </div>
+                              </div>`
+
+                      $("#sectionHolder").html(section);
+                  }
+
+              }
+          })
+
+
+
+
+      });
+
+      $(document).on("change","#section",function(e){
+
+          var amountex =   $(this).children("option:selected").attr("value");
+          $.ajax({
+              url:"/accessRow/"+amountex,
+
+              type:"GET",
+
+              success:function (data) {
+
+                  if(data.data.length > 0){
+                      var obj = "";
+                      for(var i = 0; i<data.data.length; i++){
+                          obj+= '<option value="'+data.data[i].unique_id+'">'+data.data[i].row+'</option>'
+                      }
+
+                      var row = `
+                                <div class="form-group row" id="section">
+                                    <label class="col-sm-3 col-form-label">Row.</label>
+                                    <div class="col-sm-9">
+                                        <select class="form-control" name="rowNo" id="row">
+                                            <option selected disabled="disabled">Select</option>
+                                                 ${obj}
+                                      </select>
+                                  </div>
+                              </div>`
+
+                      $("#rowHolder").html(row);
+                  }
+
+              }
+          })
+
+
+
+
+      });
+
+          $(document).ready(function () {
+
+              $('#tape').on('keyup',function() {
+                  var query = $(this).val();
+                  $.ajax({
+
+                      url:"/searchTape",
+
+                      type:"GET",
+
+                      data:{'tape':query},
+
+                      success:function (data) {
+                          if(data.data.length > 0){
+                              var obj = "";
+
+                              for(var i = 0; i<data.data.length; i++){
+                                  obj+= '<tr>'+
+                                      '<td>'+data.data[i].libNo+'</td>'+
+                                      '<td>'+data.data[i].name+'</td>'+
+                                      '<td>'+data.data[i].classOfTape+'</td>'+
+                                      '<td>'+data.data[i].program+'</td>'+
+                                      '<td>'+data.data[i].editor+'</td>'+
+                                      '<td>'+data.data[i].shelfNo+'</td>'+
+                                      '<td>'+data.data[i].rowNo+'</td>'+
+                                      '<td>'+data.data[i].section+'</td>'+
+                                      '<td>'+data.data[i].tapeNumbering+'</td>'+
+                                      '<td>'+data.data[i].tapePresence+'</td>'+
+                                      '<td>'+data.data[i].tapeType+'</td>'+
+                                      '<td>'+data.data[i].tapeContent+'</td>'+
+                                      '<td>'+data.data[i].date+'</td>'+
+                                      '<td>'+data.data[i].year+'</td>'+
+                                      '<td>'+
+                                      '<label class="badge badge-danger">Not Available</label>'+
+                                      '</td>'+
+
+                                      '</tr>'
+                              }
+
+                              var result =
+                                `
+                                    ${obj}
+                                `
+
+                              $("#test").html(result);
+                          }
+                      }
+                  })
+                  // end of ajax call
+              });
+
+          });
+
+  </script>
+
+  <script type="text/javascript">
+      $.ajaxSetup({ headers: { 'csrftoken' : '{{ csrf_token() }}' } });
+  </script>
 
 </body>
 </html>

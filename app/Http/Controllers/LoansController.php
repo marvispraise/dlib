@@ -20,7 +20,7 @@ class LoansController extends Controller
     }
 
     public function requestForm(){
-        $data['tapes'] = Tape::where('status', 1)->get();
+        $data['tapes'] = Tape::all();
         return view('loan_tape', $data);
     }
 
@@ -84,27 +84,17 @@ class LoansController extends Controller
     public function searchP(Request $request)
     {
 
-        if ($request->ajax()) {
 
-            $output="";
-            $data=Tape::where('name', 'LIKE', '%' . $request->tape . '%')
-                ->get();
-            if($data)
-            {
-            foreach ($data as $key => $product) {
-            $output.='<tr>'.
-            '<td>'.$product->id.'</td>'.
-            '<td>'.$product->name.'</td>'.
-            '<td>'.$product->classOfTape.'</td>'.
-            '<td>'.$product->tapeContent.'</td>'.
-            '<td>'.date("jS M, Y", $product->date).'</td>'.
-            '<td><a href="/viewLoan/'.$product->id.'" class="badge badge-success">Request'.'</a></td>'.
-            '</tr>';
-            }
-            return Response($output);
-               }
+        $output="";
+        $data=Tape::where('name', 'LIKE', '%' . $request->tape . '%')
+            ->get();
 
+        if($data)
+        {
+            return response()->json([
+                'status'=> true,
+                'data'=> $data,
+            ]);
         }
-
     }
 }

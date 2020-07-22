@@ -15,14 +15,8 @@ class DashboardController extends Controller
             $data['users'] = User::all();
             $data['tapes'] = Tape::all();
             $data['programs'] = Program::all();
-            $latest_loans = LoanRequest::latest()->where('status', 1)->limit(7)->get();
-            $dTapes = array();
-            foreach ($latest_loans as $tape){
-                $dTapes[] = array(
-                    'tapes' =>  Tape::where('unique_id', $tape->tape_id)->get()
-                );
-            }
-            return view('index', $data,['dTapes' => $dTapes]);
+            $data['loan_requests'] = LoanRequest::latest()->where('status', 1)->limit(7)->get();
+            return view('index', $data);
         }else{
             return redirect()->route('requestForm');
         }

@@ -22,36 +22,41 @@ Route::group(['middleware' => ['auth']], function () {
 
         //////////////Dashboard Controller
 
-    ////////////////Library Controller
-    Route::get('/library', 'LibraryController@view')->name('viewLibrary');
-    Route::post('/addLibrary', 'LibraryController@addLibrary')->name('addLibrary');
-    Route::get('/shelf/{library}', 'LibraryController@viewShelf')->name('viewShelf');
-    Route::post('/addShelf/{library}', 'LibraryController@addShelf')->name('addShelf');
-    Route::get('/section/{shelf}', 'LibraryController@viewSection')->name('viewSection');
-    Route::post('/addSection/{shelf}', 'LibraryController@addSection')->name('addSection');
-    Route::get('/row/{section}', 'LibraryController@viewRow')->name('viewRow');
-    Route::post('/addRow/{section}', 'LibraryController@addRow')->name('addRow');
-    Route::get('/tapes/{row}', 'LibraryController@viewRowTape')->name('viewRowTape');
-    Route::post('/addRowTape/{row}', 'LibraryController@addRowTape')->name('addRowTape');
-
-    //////////////////TapesController
-    Route::get('/program', 'TapesController@viewProgram')->name('viewProgram');
-    Route::post('/addProgram', 'TapesController@addProgram')->name('addProgram');
-    Route::get('/tapes', 'TapesController@viewTape')->name('viewTape');
-    Route::post('/addTape', 'TapesController@addTape')->name('addTape');
-    Route::get('/viewTapeLL', 'TapesController@viewTapeLL')->name('viewTapeLL');
-    Route::post('/loginTape', 'TapesController@loginTape')->name('loginTape');
-    Route::post('/logoutTape', 'TapesController@logoutTape')->name('logoutTape');
-
-    ////////usersController
+            ////////////////Library Controller
+            Route::get('/library', 'LibraryController@view')->name('viewLibrary');
+            Route::post('/addLibrary', 'LibraryController@addLibrary')->name('addLibrary');
+            Route::get('/shelf/{library}', 'LibraryController@viewShelf')->name('viewShelf');
+            Route::post('/addShelf/{library}', 'LibraryController@addShelf')->name('addShelf');
+            Route::get('/section/{shelf}', 'LibraryController@viewSection')->name('viewSection');
+            Route::post('/addSection/{shelf}', 'LibraryController@addSection')->name('addSection');
+            Route::get('/row/{section}', 'LibraryController@viewRow')->name('viewRow');
+            Route::post('/addRow/{section}', 'LibraryController@addRow')->name('addRow');
+            Route::get('/tapes/{row}', 'LibraryController@viewRowTape')->name('viewRowTape');
+            Route::post('/addRowTape/{row}', 'LibraryController@addRowTape')->name('addRowTape');
 
 
-    //////////loansController
-    Route::get('/tapeRequest', 'LoansController@viewRequestedTape')->name('tapeRequest');
-    Route::get('/accept/{id}', 'LoansController@accept')->name('accept');
-    Route::get('/decline/{id}', 'LoansController@decline')->name('decline');
+            //////////////////TapesController
+            Route::get('/program', 'TapesController@viewProgram')->name('viewProgram');
+            Route::post('/addProgram', 'TapesController@addProgram')->name('addProgram');
+            Route::get('/tapes', 'TapesController@viewTape')->name('viewTape');
+            Route::get('/searchTape', 'TapesController@searchTape')->name('searchTape');
+            Route::post('/addTape', 'TapesController@addTape')->name('addTape');
+            Route::get('/viewTapeLL', 'TapesController@viewTapeLL')->name('viewTapeLL');
+            Route::post('/loginTape', 'TapesController@loginTape')->name('loginTape');
+            Route::post('/logoutTape', 'TapesController@logoutTape')->name('logoutTape');
+            Route::get('/accessShelf/{id}', 'TapesController@accessShelf')->name('accessShelf');
+            Route::get('/accessSection/{id}', 'TapesController@accessSection')->name('accessSection');
+            Route::get('/accessRow/{id}', 'TapesController@accessRow')->name('accessRow');
 
-        // Route::post('/users', 'UsersController@addUser')->name('addUser');
+            ////////usersController
+
+
+            //////////loansController
+            Route::get('/tapeRequest', 'LoansController@viewRequestedTape')->name('tapeRequest');
+            Route::get('/accept/{id}', 'LoansController@accept')->name('accept');
+            Route::get('/decline/{id}', 'LoansController@decline')->name('decline');
+
+            // Route::post('/users', 'UsersController@addUser')->name('addUser');
 
         });
     Route::get('/requestTape', 'LoansController@requestForm')->name('requestForm');

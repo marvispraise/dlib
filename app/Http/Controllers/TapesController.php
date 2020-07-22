@@ -42,7 +42,7 @@ class TapesController extends Controller
     }
 
     public function viewTape() {
-        $data['items'] = Tape::all();
+        $data['items'] = Tape::orderBy('name','DESC')->paginate(10);
         $data['libraries'] = Library::all();
         $data['rows'] = Row::all();
         $data['sections'] = Section::all();
@@ -120,6 +120,91 @@ class TapesController extends Controller
 
         return redirect()->route('viewTapeLL')
             ->with('success','Successfully Logged Out Tape.');
+    }
+
+
+    public function accessShelf($id){
+//        $data['shelves'] = Shelf::where('library_id', $id);
+
+
+
+            $output="";
+            $data = Shelf::where('library_id', $id)->get();
+
+            if($data)
+            {
+                return response()->json([
+                    'status'=> true,
+                    'data'=> $data,
+                ]);
+            }
+
+    }
+
+    public function accessSection($id){
+
+            $output="";
+            $data = Section::where('shelf_id', $id)->get();
+//            dd($data);
+            if($data)
+            {
+
+                return response()->json([
+                    'status'=> true,
+                    'data'=> $data,
+                ]);
+            }
+    }
+
+    public function accessRow($id){
+        $data = Row::where('section_id', $id)->get();
+        if($data)
+        {
+            return response()->json([
+                'status'=> true,
+                'data'=> $data,
+            ]);
+        }
+    }
+
+    public function searchTape(Request $request){
+        $data=Tape::where('name', 'LIKE', '%' . $request->tape . '%')
+            ->get();
+
+
+
+        $dataArr = array();
+        if($data)
+        {
+
+           foreach ($data as $dat){
+               $dataArr[] = array(
+                   'name' => $dat -> name,
+                   'classOfTape' => $dat->classOfTape,
+                   'program' => $dat->programs->title,
+                   'editor' => $dat->editor,
+                   'minister' => $dat->minister,
+                   'libNo' => $dat->library->library,
+                   'shelfNo' => $dat->shelf->shelf,
+                   'section' => $dat->sections->section,
+                   'rowNo' => $dat->row->row,
+                   'tapeNumbering' =>$dat->tapeNumbering,
+                   'tapePresence' => $dat->tapePresence,
+                   'tapeType' => $dat->tapeType,
+                   'tapeContent' => $dat -> tapeContent,
+                   'date' => date("D jS M", $dat->date),
+                   'year' => date("Y", $dat->date),
+                   'status' => $dat->status,
+               );
+
+           }
+
+            return response()->json([
+                'status'=> true,
+                'data'=> $dataArr,
+            ]);
+
+        }
     }
 
 

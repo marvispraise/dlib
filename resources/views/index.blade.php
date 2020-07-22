@@ -71,15 +71,13 @@
                         </tr>
                       </thead>
                       <tbody>
-                      @foreach($dTapes as $loan)
-                      @foreach($loan['tapes'] as $l)
+                      @foreach($loan_requests as $loan)
                         <tr>
-                          <td>{{$l->loan->firstname}} {{$l->loan->lastname}}</td>
-                          <td>{{$l->programs->title}} </td>
-                          <td>{{date("Y-m-d", $l->loan->borrowedDate)}}</td>
-                          <td>{{date("Y-m-d", $l->loan->returningDate)}}</td>
+                          <td>{{$loan->firstname}} {{$loan->lastname}}</td>
+                          <td>{{$loan->tape->programs->title}} - {{$loan->tape->name}} </td>
+                          <td>{{date("Y-m-d", $loan->borrowedDate)}}</td>
+                          <td>{{date("Y-m-d", $loan->returningDate)}}</td>
                         </tr>
-                      @endforeach
                       @endforeach
                       </tbody>
                     </table>

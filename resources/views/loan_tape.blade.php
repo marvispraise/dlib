@@ -43,37 +43,8 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-md-12 grid-margin stretch-card">
-                <div class="card">
-                <div class="card-body">
-                  <div class="template-demo">
-                      {{--<ul class="list-group" style="display: block; position: relative; z-index: 1">--}}
-                          {{--@foreach($data as $row)--}}
-                          {{--<li class="list-group-item" >{{$row->name}}</li>--}}
-                          {{--@endforeach--}}
-                      {{--</ul>--}}
-                      <div class="media">
-                          <div class="table-responsive">
-                              <table id="order-listing" class="table">
-                                  <thead>
-                                  <tr>
-                                      <th>id</th>
-                                      <th>Program Title</th>
-                                      <th>Class Of Tape</th>
-                                      <th>Tape Content</th>
-                                      <th>Date</th>
-                                      <th>Action</th>
-                                  </tr>
-                                  </thead>
-                                  <tbody id="white-box">
+            <div class="col-md-12 grid-margin stretch-card"  id="table">
 
-                                  </tbody>
-                              </table>
-                          </div>
-                      </div>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
             </form>
@@ -97,15 +68,73 @@
               var query = $(this).val();
               $.ajax({
 
-                  url:"{{ route('searchP') }}",
+                  url:"/searchP",
 
                   type:"GET",
 
                   data:{'tape':query},
 
                   success:function (data) {
+                      if(data.data.length > 0){
+                          var obj = "";
 
-                      $('tbody').html(data);
+                          for(var i = 0; i<data.data.length; i++){
+                              obj+= '<tr>'+
+                              '<td>'+data.data[i].id+'</td>'+
+                              '<td>'+data.data[i].name+'</td>'+
+                              '<td>'+data.data[i].classOfTape+'</td>'+
+                              '<td>'+data.data[i].tapeContent+'</td>'+
+                              '<td><a href="/viewLoan/'+data.data[i].id+'" class="badge badge-success">Request</a>'+
+                              '</td>'+
+
+                               '</tr>'
+
+
+
+                              // $output.='<tr>'.
+                              // '<td>'.$product->id.'</td>'.
+                              // '<td>'.$product->name.'</td>'.
+                              // '<td>'.$product->classOfTape.'</td>'.
+                              // '<td>'.$product->tapeContent.'</td>'.
+                              // '<td>'.date("jS M, Y", $product->date).'</td>'.
+                              // '<td><a href="/viewLoan/'.$product->id.'" class="badge badge-success">Request'.'</a></td>'.
+                              // '</tr>'; obj+= '<option value="'+data.data[i].unique_id+'">'+data.data[i].shelf+'</option>'
+                          }
+
+
+
+                          var result =
+                              `
+
+                <div class="card">
+                <div class="card-body">
+                  <div class="template-demo">
+                      <div class="media">
+                          <div class="table-responsive">
+
+                                            <table id="order-listing" class="table">
+                                              <thead>
+                                              <tr>
+                                                  <th>id</th>
+                                                  <th>Program Title</th>
+                                                  <th>Class Of Tape</th>
+                                                  <th>Tape Content</th>
+                                                  <th>Action</th>
+                                              </tr>
+                                              </thead>
+                                              <tbody id="white-box">
+                                            ${obj}
+                                  </tbody>
+                              </table>
+                          </div>
+                      </div>
+                  </div>
+                </div>
+              </div>
+            `
+
+                          $("#table").html(result);
+                      }
                   }
               })
               // end of ajax call
@@ -113,6 +142,7 @@
 
       });
   </script>
+
 
   <script type="text/javascript">
       $.ajaxSetup({ headers: { 'csrftoken' : '{{ csrf_token() }}' } });

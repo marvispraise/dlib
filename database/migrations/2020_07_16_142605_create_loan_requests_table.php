@@ -15,6 +15,8 @@ class CreateLoanRequestsTable extends Migration
     {
         Schema::create('loan_requests', function (Blueprint $table) {
             $table->id();
+            $table->string('unique_id');
+            $table->string('user_id');
             $table->string('firstname');
             $table->string('lastname');
             $table->string('email');
