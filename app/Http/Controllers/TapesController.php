@@ -91,8 +91,8 @@ class TapesController extends Controller
 
 
     public function viewTapeLL(){
-        $data['tapes'] = Tape::where('status', 0)->get();
-        $data['lTapes'] = Tape::where('status', 1)->get();
+        $data['tapes'] = Tape::where('status', 'unavailable')->get();
+        $data['lTapes'] = Tape::where('status', 'available')->get();
         return view('tapeLL', $data);
     }
 
@@ -101,7 +101,7 @@ class TapesController extends Controller
             'tape' => 'required',
         ]);
         $new = Tape::where('unique_id',$request->get('tape'))->first();
-        $new->status = 1;
+        $new->status = 'available';
         $new->update();
 
 
@@ -115,7 +115,7 @@ class TapesController extends Controller
             'tape' => 'required',
         ]);
         $new = Tape::where('unique_id',$request->get('tape'))->first();
-        $new->status = 0;
+        $new->status = 'unavailable';
         $new->update();
 
         return redirect()->route('viewTapeLL')

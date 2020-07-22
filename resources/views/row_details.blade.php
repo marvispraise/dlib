@@ -75,7 +75,7 @@
                                             <td>{{date("D jS M", $tape->date)}}</td>
                                             <td>{{date("Y", $tape->date)}}</td>
                                             <td>
-                                                @if($tape->status == 0)
+                                                @if($tape->status == 'unavailable')
                                                     <label class="badge badge-danger">Not Available</label>
                                                 @else
                                                     <label class="badge badge-success">Available</label>

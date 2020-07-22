@@ -30,7 +30,7 @@ class CreateTapesTable extends Migration
             $table->string('tapeType');
             $table->string('tapeContent')->nullable();
             $table->string('date');
-            $table->string('status')->default(1);
+            $table->string('status')->default('available');
             $table->timestamps();
         });
     }

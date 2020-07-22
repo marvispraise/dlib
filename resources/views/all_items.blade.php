@@ -103,7 +103,7 @@
                                                         <td>{{date("Y", $item->date)}}</td>
 
                                                         <td>
-                                                            @if($item->status == 0)
+                                                            @if($item->status == 'unavailable')
                                                                 <label class="badge badge-danger">Not Available</label>
                                                             @else
                                                                 <label class="badge badge-success">Available</label>
@@ -444,7 +444,7 @@
                                       '<td>'+data.data[i].date+'</td>'+
                                       '<td>'+data.data[i].year+'</td>'+
                                       '<td>'+
-                                      '<label class="badge badge-danger">Not Available</label>'+
+                                      '<label class="badge badge-primary">'+data.data[i].status+'</label>'+
                                       '</td>'+
 
                                       '</tr>'
